@@ -64,6 +64,13 @@ public class IntListTest {
         IntList exp = IntList.list(1, 2, 3, 4, 5, 6);
         assertEquals(exp, IntList.catenate(A, B));
         assertEquals(IntList.list(1, 2, 3), A);
+        A = IntList.list();
+        B = IntList.list(4, 5, 6);
+        exp = IntList.list(4, 5, 6);
+        assertEquals(exp, IntList.catenate(A, B));
+        // Testing when both are null
+        B = IntList.list();
+        assertEquals(null, IntList.catenate(A,B));
     }
 
 }
