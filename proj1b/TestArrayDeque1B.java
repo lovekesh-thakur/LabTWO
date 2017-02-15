@@ -11,32 +11,47 @@ public class TestArrayDeque1B {
     {
         StudentArrayDeque<Integer> student = new StudentArrayDeque<>();
         ArrayDequeSolution<Integer> prof = new ArrayDequeSolution<>();
+        OperationSequence ops = new OperationSequence();
         /* randomly calling functions */
-        for(int i = 0; i < 300; i++)
+        for(int i = 0; i < 505; i++)
         {
             int rand = StdRandom.uniform(0,30);
-            if(rand < 5 && (student.size() > 0) )
+            DequeOperation op;
+            if(rand < 2)
             {
-                student.removeFirst();
-                prof.removeFirst();
-            }else
+                if(student.size() > 0) {
+                    op = new DequeOperation("removeFirst");
+                    ops.addOperation(op);
+                    student.removeFirst();
+                    prof.removeFirst();
+                }
+            }
+            if(rand < 10 && (rand >= 3))
             {
+                op = new DequeOperation("addLast", rand);
+                ops.addOperation(op);
                 student.addLast(rand);
                 prof.addLast(rand);
             }
-            if(rand > 10 && (rand < 20) )
+            if(rand >= 10 && (rand < 28) )
             {
+                op = new DequeOperation("addFirst", rand);
+                ops.addOperation(op);
                 student.addFirst(rand);
                 prof.addFirst(rand);
-            }else
+            }
+            if(rand >= 28)
             {
                 if(student.size() > 0)
                 {
+                    op = new DequeOperation("removeLast");
+                    ops.addOperation(op);
                     student.removeLast();
                     prof.removeLast();
                 }
             }
-            if(i % 5 == 0)
+
+            if((i % 4) == 0)
             {
                 System.out.println("Testing...");
                 // Checking at every fifth step
@@ -44,22 +59,14 @@ public class TestArrayDeque1B {
                     int get_random = StdRandom.uniform(0, student.size());
                     Integer x = student.get(get_random);
                     Integer y = prof.get(get_random);
-                    if (x != y) {
-                        System.out.println("Item do not match at position " + get_random + " Expected " + y + " but got " + x);
-                        System.out.println("Your deque contains...");
-                        student.printDeque();
-                        System.out.println("prof deque contains...");
-                        for(int j = 0; j < prof.size(); j++)
-                        {
-                            System.out.print(prof.get(j) + " ");
-                        }
-                        System.out.println();
-                        System.exit(0);
-                    }
+                    assertEquals('\n' + ops.toString(), y, x);
+
+
                 }
             }
 
         }
+
 
     }
 }
